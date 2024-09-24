@@ -1,0 +1,22 @@
+<style>
+    form{
+        padding: 4% 6%;
+    }
+</style>
+
+
+
+<form action="{% url 'update_profile' %}" method="POST">
+    {% csrf_token %}
+    <p>
+        <label for="">Phone</label>
+        <input type="text" value="{% if user.profile.phone != null %}{{user.profile.phone}}{% endif %}" name="phone">
+    </p>
+    <p>
+        <label for="">Address</label>
+        <input type="text" value="{% if user.profile.address != null %}{{user.profile.address}}{% endif %}" name="address">
+    </p>
+    <p>
+        <button>Send</button>
+    </p>
+</form>

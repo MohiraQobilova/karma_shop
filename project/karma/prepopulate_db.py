@@ -1,0 +1,6 @@
+PaymentType.objects.create(name='Payme',system_name='payme')
+PaymentType.objects.create(name='Naqd',system_name='cash')
+OrderStatus.objects.create(name='Yangi',system_name='new')
+OrderStatus.objects.create(name='Amalda', system_name='process')
+OrderStatus.objects.create(name='Yopiq', system_name='done')
+OrderStatus.objects.create(name='To\'langan', system_name='payed')

@@ -1,0 +1,70 @@
+{% extends 'karma/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div style="width: 1130px; margin: 10px auto;height: 1000px;margin-top: 500px;">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Order Number</th>
+                <th>Date</th>
+                <th>Customer Name</th>
+                <th>Customer Phone</th>
+                <th>Customer Address</th>
+                <th>Order Status</th>
+                <th>Payment Type</th>
+                <th>Products</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr >
+                <td>{{order.id}}</td>
+                <td>{{order.date}}</td>
+                <td>{{order.user.username}} </td>
+                <td>{{order.user.phone}}</td>
+                <td>{{order.user.address}}</td>
+                <td>
+                    <form action="{% url 'change_status' order.id %}" method="POST">
+                        {% csrf_token %}
+                        <select onchange="{this.form.submit()}" name="order_status">
+                            {% for status in order_statuses %}
+                            <option value="{{status.id}}" {% if order.order_status.id == status.id %}selected{% endif %}>{{status.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </td>
+                <td>{{order.payment_type.name}}</td>
+                <td>
+                    {% for product in order.orderproduct_set.all %}
+                    {{product.product_name}} | {{product.product_price}} * {{product.count}} -> {{product.summ}}
+                    <hr>
+                    {% endfor %}
+                </td>
+                <td>{{order.total}}</td>
+                <style>
+                    .order-status-color{
+                       {% if order.order_status.system_name == 'new' %}
+                       background-color: blue !important;
+                       color: white !important;
+                       {% elif order.order_status.system_name == 'process' %}
+                       background-color: #777700 !important;
+                       color: white !important;
+                       {% elif order.order_status.system_name == 'done' %}
+                       background-color: green !important;
+                       color: white !important;
+                       {% elif order.order_status.system_name == 'payed' %}
+                       background-color: gray !important;
+                       color: black !important;
+                       {% endif %}
+                    }
+               </style>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
